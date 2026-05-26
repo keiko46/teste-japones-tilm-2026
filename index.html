@@ -563,28 +563,35 @@ const questions = [
   {id:28, level:"N1", jp:"彼のあまりにも身勝手な行動には、怒りを禁じ ___ 。", prompt:"Qual forma verbal completa corretamente esta expressão formal que indica 'não ser capaz de conter um sentimento'?", opts:["得ない","かねない","きれない","がたい"], correct:0},
   // SEÇÃO 4
   {id:29, section:"Seção 4", sectionTitle:"Leitura e Compreensão Textual", sectionDesc:"Interprete o texto e responda à questão.", level:"N2", jp:"「環境問題は複雑で、一国だけでは解決できない。国際的な協力が不可欠だ。」", prompt:"O que o texto afirma?", opts:["Problemas ambientais exigem cooperação internacional","Um país pode resolver sozinho","O problema não é complexo","Cooperação internacional é desnecessária"], correct:0},
-  {id:30, level:"N1", jp:"「彼は失敗を恐れず、果敢に挑戦し続けた。その姿勢こそが、後の成功を生んだのだと言えよう。」", prompt:"Qual é a mensagem central do texto?", opts:["A coragem de arriscar apesar do fracasso levou ao sucesso","O medo do fracasso é necessário","Ele teve sorte sem esforço","O sucesso independe da atitude"], correct:0},
+  {id:30, level:"N1", jp:"「彼は失敗を恐れず、果敢に挑戦し続けた。その姿勢こそgあ、後の成功を生んだのだと言えよう。」", prompt:"Qual é a mensagem central do texto?", opts:["A coragem de arriscar apesar do fracasso levou ao sucesso","O medo do fracasso é necessário","Ele teve sorte sem esforço","O sucesso independe da atitude"], correct:0},
 ];
-// Função para embaralhar as opções de todas as questões ao carregar a página
+
+// Função defensiva de embaralhar as alternativas
 function embaralharAlternativas() {
   questions.forEach(q => {
-    // 1. Salva o texto da resposta correta original
+    if (!q.opts || q.correct === undefined) return;
+    
+    // 1. Salva o texto da alternativa correta antes de embaralhar
     const respostaCorretaTexto = q.opts[q.correct];
     
-    // 2. Embaralha o array de opções usando o algoritmo Fisher-Yates
-    for (let i = q.opts.length - 1; i > 0; i--) {
+    // 2. Cria uma cópia do array de opções para embaralhar com segurança
+    let arr = [...q.opts];
+    for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      const temp = q.opts[i];
-      q.opts[i] = q.opts[j];
-      q.opts[j] = temp;
+      const temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
     }
     
-    // 3. Atualiza o índice 'correct' para apontar para a nova posição do texto correto
-    q.correct = q.opts.indexOf(respostaCorretaTexto);
+    // 3. Aplica o array embaralhado de volta à questão
+    q.opts = arr;
+    
+    // 4. Localiza o novo índice da resposta correta no array recém-embaralhado
+    q.correct = arr.indexOf(respostaCorretaTexto);
   });
 }
 
-// Executa o embaralhamento assim que a página carrega
+// Executa o embaralhamento antes de renderizar as questões na tela
 embaralharAlternativas();
 
 let answers = {};
@@ -710,7 +717,7 @@ function submitTest() {
     document.getElementById('bf2').style.width=n2n1p+'%';
   }, 200);
 
-// Enviar para Google Sheets (Substituído por envio nativo do Apps Script)
+// Enviar para Google Sheets
   const payload = {
     nome, total, percentual: pct, nivel, jlpt,
     N5: byLevel.N5+'/'+countLevel.N5,
