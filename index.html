@@ -498,7 +498,7 @@ body {
 <div class="page-header">
   <p class="header-jp">日本語レベルテスト</p>
   <h1 class="header-title">Teste de Nivelamento — Japonês</h1>
-  <p class="header-sub">30 questões · ~15 minutos · N5 ao N1</p>
+  <p class="header-sub">30 questões · ~60 minutos · N5 ao N1</p>
 </div>
 
 <div class="progress-wrap">
@@ -527,7 +527,7 @@ body {
 </div>
 
 <script>
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbz2r3tgoCjUu89kF5VUVzpm2QF_UqBtfpUYeMglo-xv-9hjw0lm3avc3RCkSyVnY-xcZA/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbw6hAtmsQqvf9dIE3dd-Yb-HjWUYKcXItp53G1wJmJ0L0BO9eUVBlZXEOjas3PLctRQZw/exec";
 
 const questions = [
   // SEÇÃO 1
@@ -698,15 +698,19 @@ function submitTest() {
     N2N1: (byLevel.N2+byLevel.N1)+'/'+(countLevel.N2+countLevel.N1)
   };
 
-  google.script.run
-    .withSuccessHandler(function() {
-      document.getElementById('send-status').innerHTML = '<div class="sent-ok">✓ Resultado registrado com sucesso!</div>';
-    })
-    .withFailureHandler(function(error) {
-      console.error("Erro no envio:", error);
-      document.getElementById('send-status').innerHTML = '<div class="sent-err">Não foi possível enviar o resultado automaticamente. Anote seu resultado e informe ao avaliador.</div>';
-    })
-    .salvarResultado(payload); // Chama diretamente a função do Código.gs
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors', // Modo necessário para evitar bloqueios de segurança do navegador (CORS)
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    document.getElementById('send-status').innerHTML = '<div class="sent-ok" style="color: green; font-weight: bold; margin-top: 10px;">✓ Resultado registrado com sucesso!</div>';
+  }).catch((error) => {
+    console.error("Erro ao enviar:", error);
+    document.getElementById('send-status').innerHTML = '<div class="sent-err" style="color: red; font-weight: bold; margin-top: 10px;">Não foi possível enviar o resultado automaticamente. Anote seu resultado e informe ao avaliador.</div>';
+  });
 }
 
 buildQuestions();
