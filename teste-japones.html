@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste de Nivelamento — Japonês</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --surface2: #F0EDE6;
+  --ink: #1A1814;
+  --ink2: #6B6560;
+  --ink3: #A09890;
+  --accent: #C84B2F;
+  --accent2: #2B5FA6;
+  --border: rgba(26,24,20,0.1);
+  --border2: rgba(26,24,20,0.18);
+  --n5: #2D6A2D;
+  --n5bg: #EDF6ED;
+  --n4: #1A5296;
+  --n4bg: #E8F0FB;
+  --n3: #8B5A00;
+  --n3bg: #FEF3DC;
+  --n2: #C84B2F;
+  --n2bg: #FDEEE9;
+  --n1: #5B3A9E;
+  --n1bg: #F0ECFF;
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.page-header {
+  background: var(--ink);
+  color: white;
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+}
+
+.header-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  opacity: 0.5;
+  margin-bottom: 0.5rem;
+}
+
+.header-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.header-sub {
+  font-size: 13px;
+  opacity: 0.5;
+  letter-spacing: 0.02em;
+}
+
+.progress-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  padding: 0 0 1px;
+}
+
+.progress-bar {
+  height: 3px;
+  background: rgba(255,255,255,0.15);
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1.5rem;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+}
+
+.main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 4rem;
+}
+
+/* Nome do candidato */
+.name-block {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.name-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink2);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.name-input {
+  width: 100%;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 0.65rem 0.9rem;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.name-input:focus { border-color: var(--accent2); }
+
+/* Seção */
+.section-header {
+  margin: 2.5rem 0 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.section-desc {
+  font-size: 13px;
+  color: var(--ink3);
+}
+
+/* Questão */
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.25rem 1rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s;
+}
+
+.q-card.answered { border-color: var(--border2); }
+
+.q-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.9rem;
+}
+
+.q-num {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink3);
+  min-width: 24px;
+}
+
+.level-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.badge-N5 { background: var(--n5bg); color: var(--n5); }
+.badge-N4 { background: var(--n4bg); color: var(--n4); }
+.badge-N3 { background: var(--n3bg); color: var(--n3); }
+.badge-N2 { background: var(--n2bg); color: var(--n2); }
+.badge-N1 { background: var(--n1bg); color: var(--n1); }
+
+.q-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+  line-height: 1.5;
+}
+
+.q-reading {
+  font-size: 12px;
+  color: var(--ink3);
+  margin-bottom: 0.7rem;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.q-prompt {
+  font-size: 14px;
+  color: var(--ink2);
+  margin-bottom: 0.9rem;
+}
+
+.opts {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--bg);
+  text-align: left;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.opt:hover:not(.disabled) {
+  border-color: var(--border2);
+  background: var(--surface2);
+}
+
+.opt-letter {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink3);
+  min-width: 16px;
+  padding-top: 1px;
+}
+
+.opt.selected {
+  border-color: var(--accent2);
+  background: var(--n4bg);
+  color: var(--n4);
+}
+.opt.selected .opt-letter { color: var(--n4); }
+
+.opt.correct {
+  border-color: var(--n5);
+  background: var(--n5bg);
+  color: var(--n5);
+}
+.opt.correct .opt-letter { color: var(--n5); }
+
+.opt.wrong {
+  border-color: var(--accent);
+  background: var(--n2bg);
+  color: var(--accent);
+}
+.opt.wrong .opt-letter { color: var(--accent); }
+
+.opt.disabled { cursor: default; pointer-events: none; }
+
+/* Submit */
+.submit-wrap {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.submit-btn {
+  display: inline-block;
+  padding: 0.85rem 2.5rem;
+  background: var(--ink);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: all 0.2s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.submit-note {
+  font-size: 12px;
+  color: var(--ink3);
+  margin-top: 0.75rem;
+}
+
+/* Resultado */
+.result-section {
+  display: none;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--border);
+}
+
+.result-section.visible { display: block; }
+
+.result-hero {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  background: var(--ink);
+  border-radius: var(--radius-lg);
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.result-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  opacity: 0.4;
+  margin-bottom: 0.4rem;
+}
+
+.result-level {
+  font-size: clamp(26px, 6vw, 38px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.result-jlpt {
+  font-size: 13px;
+  opacity: 0.5;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 1.25rem;
+}
+
+.score-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.score-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 0.25rem;
+}
+
+.score-card-val {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.score-card-sub {
+  font-size: 12px;
+  color: var(--ink3);
+}
+
+.bars-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.85rem;
+}
+
+.bar-row:last-child { margin-bottom: 0; }
+
+.bar-label {
+  font-size: 12px;
+  color: var(--ink2);
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+  width: 0%;
+}
+
+.bar-pct {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink2);
+  width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.desc-block {
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.sending-msg {
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink3);
+  padding: 1rem;
+}
+
+.sent-ok {
+  background: var(--n5bg);
+  border: 1px solid var(--n5);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-size: 14px;
+  color: var(--n5);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.sent-err {
+  background: var(--n2bg);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-size: 14px;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <p class="header-jp">日本語レベルテスト</p>
+  <h1 class="header-title">Teste de Nivelamento — Japonês</h1>
+  <p class="header-sub">30 questões · ~15 minutos · N5 ao N1</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="pbar"></div></div>
+  <div class="progress-info">
+    <span id="ptext">0 de 30 respondidas</span>
+    <span id="pname-show"></span>
+  </div>
+</div>
+
+<div class="main">
+  <!-- Nome -->
+  <div class="name-block">
+    <p class="name-label">Seu nome</p>
+    <input class="name-input" type="text" id="nome-input" placeholder="Digite seu nome completo..." oninput="updateNameDisplay()">
+  </div>
+
+  <div id="questions-area"></div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" id="submit-btn" disabled onclick="submitTest()">Finalizar e ver resultado</button>
+    <p class="submit-note" id="submit-note">Responda todas as 30 questões e informe seu nome para continuar.</p>
+  </div>
+
+  <div class="result-section" id="result-section"></div>
+</div>
+
+<script>
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbz2r3tgoCjUu89kF5VUVzpm2QF_UqBtfpUYeMglo-xv-9hjw0lm3avc3RCkSyVnY-xcZA/exec";
+
+const questions = [
+  // SEÇÃO 1
+  {id:1, section:"Seção 1", sectionTitle:"Vocabulário e Hiragana / Katakana", sectionDesc:"Identifique o significado ou a leitura correta. (Equivalente N5–N4)", level:"N5", jp:"何ですか？", reading:"(なんですか？)", prompt:"O que significa esta frase?", opts:["O que é isso?","Onde fica?","Quanto custa?","Quando é?"], correct:0},
+  {id:2, level:"N5", jp:"わたしは がくせい ___。", prompt:"Complete com a palavra/partícula correta:", opts:["です","は","を","に"], correct:0},
+  {id:3, level:"N5", jp:"「こんにちは」の反対は？", prompt:"Qual é o oposto de 'こんにちは' (olá)?", opts:["どういたしまして","すみません","はじめまして","さようなら"], correct:3},
+  {id:4, level:"N5", jp:"３時 ___ 学校に行きます。", prompt:"Qual partícula completa corretamente?", opts:["に","が","を","で"], correct:0},
+  {id:5, level:"N5", jp:"「たかい」の意味は？", prompt:"Qual é o significado de 「たかい」?", opts:["caro / alto","barato / baixo","grande / largo","pequeno / estreito"], correct:0},
+  {id:6, level:"N4", jp:"彼女は毎日日本語を ___。", prompt:"Complete com a forma correta do verbo 「勉強する」:", opts:["勉強します","勉強して","勉強した","勉強しない"], correct:0},
+  {id:7, level:"N4", jp:"この荷物は重くて、___。", prompt:"Qual frase completa naturalmente esta oração?", opts:["持てません","持ちます","持っていました","持てるでしょう"], correct:0},
+  {id:8, level:"N4", jp:"雨が降る ___ 、走ってください。", prompt:"Qual conjunção preenche corretamente?", opts:["前に","後で","ときに","ために"], correct:0},
+  {id:9, level:"N4", jp:"「～てもいい」の意味は？", prompt:"O que expressa a gramática 「～てもいい」?", opts:["permissão","proibição","obrigação","possibilidade"], correct:0},
+  {id:10, level:"N4", jp:"彼は学生 ___ 、先生でもあります。", prompt:"Qual palavra completa corretamente?", opts:["だけでなく","だから","しかし","ところで"], correct:0},
+  // SEÇÃO 2
+  {id:11, section:"Seção 2", sectionTitle:"Gramática e Leitura Intermediária", sectionDesc:"Questões de estrutura gramatical e compreensão. (Equivalente N3 e SPOT-90)", level:"N3", jp:"この映画は見る ___ があります。", prompt:"Complete com a expressão correta:", opts:["価値","目的","理由","方法"], correct:0},
+  {id:12, level:"N3", jp:"彼は仕事が終わり ___ 、すぐ帰った。", prompt:"Qual forma gramatical completa corretamente?", opts:["次第","ために","ように","ながら"], correct:0},
+  {id:13, level:"N3", jp:"「彼女は来ないかもしれない。」", prompt:"O que expressa 「～かもしれない」?", opts:["incerteza / possibilidade","certeza absoluta","proibição","desejo"], correct:0},
+  {id:14, level:"N3", jp:"試験に合格 ___ ように、毎日勉強しています。", prompt:"Complete com a forma correta:", opts:["できる","した","して","する"], correct:0},
+  {id:15, level:"N3", jp:"彼女は疲れている ___ 、まだ働いている。", prompt:"Qual conjunção indica contraste aqui?", opts:["にもかかわらず","だから","それで","すると"], correct:0},
+  {id:16, level:"N3", jp:"「お客様は神様 ___ 。」", prompt:"Complete o ditado com a forma correta:", opts:["です","だろう","らしい","ようだ"], correct:0},
+  {id:17, level:"N3", jp:"「～に違いない」の意味は？", prompt:"O que expressa 「～に違いない」?", opts:["certeza forte do falante","dúvida","proibição","sugestão"], correct:0},
+  {id:18, level:"N3", jp:"先生に褒め ___ 、うれしかったです。", prompt:"Qual forma verbal completa corretamente (passiva)?", opts:["られて","させて","てもらって","てあげて"], correct:0},
+  // SEÇÃO 3
+  {id:19, section:"Seção 3", sectionTitle:"Gramática Avançada", sectionDesc:"Estruturas complexas e nuances formais. (Equivalente N2–N1 e Grammar-90)", level:"N2", jp:"経済の悪化 ___ 、失業者が増えている。", prompt:"Complete com a expressão causal mais precisa:", opts:["に伴い","にとって","に対して","によって"], correct:0},
+  {id:20, level:"N2", jp:"彼の発言は誤解を ___ 恐れがある。", prompt:"Complete com o verbo mais adequado:", opts:["招く","起こす","作る","生む"], correct:0},
+  {id:21, level:"N2", jp:"「その計画は実現 ___ 。」", prompt:"Qual forma expressa impossibilidade formal/escrita?", opts:["しかねる","できない","しない","するまい"], correct:0},
+  {id:22, level:"N2", jp:"いくら努力 ___ 、才能がなければ無意味だ。", prompt:"Complete a estrutura concessiva:", opts:["しても","したら","するなら","したので"], correct:0},
+  {id:23, level:"N2", jp:"「彼は事故に ___ 、今入院している。」", prompt:"Complete com a expressão mais natural:", opts:["遭って","当たって","ぶつかって","触れて"], correct:0},
+  {id:24, level:"N1", jp:"その発言は批判を ___ ことなく、聴衆を沸かせた。", prompt:"Complete com a expressão mais precisa:", opts:["招く","止む","越える","省く"], correct:0},
+  {id:25, level:"N1", jp:"「由々しき問題」の意味は？", prompt:"Qual é o significado correto desta expressão formal?", opts:["problema muito sério / grave","problema simples","questão interessante","dúvida filosófica"], correct:0},
+  {id:26, level:"N1", jp:"社員のモラルを ___ ために、研修を行った。", prompt:"Qual é o verbo mais adequado neste contexto formal?", opts:["高める","上がる","強い","増す"], correct:0},
+  {id:27, level:"N1", jp:"「～を余儀なくされる」の意味は？", prompt:"O que esta expressão formal significa?", opts:["ser forçado a fazer algo","ter vontade de","permitir que","decidir por conta própria"], correct:0},
+  {id:28, level:"N1", jp:"彼のあまりにも身勝手な行動には、怒りを禁じ ___ 。", prompt:"Qual forma verbal completa corretamente esta expressão formal que indica 'não ser capaz de conter um sentimento'?", opts:["得ない","かねない","きれない","がたい"], correct:0},
+  // SEÇÃO 4
+  {id:29, section:"Seção 4", sectionTitle:"Leitura e Compreensão Textual", sectionDesc:"Interprete o texto e responda à questão.", level:"N2", jp:"「環境問題は複雑で、一国だけでは解決できない。国際的な協力が不可欠だ。」", prompt:"O que o texto afirma?", opts:["Problemas ambientais exigem cooperação internacional","Um país pode resolver sozinho","O problema não é complexo","Cooperação internacional é desnecessária"], correct:0},
+  {id:30, level:"N1", jp:"「彼は失敗を恐れず、果敢に挑戦し続けた。その姿勢こそが、後の成功を生んだのだと言えよう。」", prompt:"Qual é a mensagem central do texto?", opts:["A coragem de arriscar apesar do fracasso levou ao sucesso","O medo do fracasso é necessário","Ele teve sorte sem esforço","O sucesso independe da atitude"], correct:0},
+];
+
+let answers = {};
+let submitted = false;
+
+function buildQuestions() {
+  const area = document.getElementById('questions-area');
+  let html = '';
+  questions.forEach((q, i) => {
+    if (q.section) {
+      html += `<div class="section-header">
+        <span class="section-tag">Seção ${q.section.split(' ')[1]}</span>
+        <p class="section-title">${q.sectionTitle}</p>
+        <p class="section-desc">${q.sectionDesc}</p>
+      </div>`;
+    }
+    html += `<div class="q-card" id="qcard-${q.id}">
+      <div class="q-top">
+        <span class="q-num">Q${i+1}</span>
+        <span class="level-badge badge-${q.level}">${q.level}</span>
+      </div>
+      <p class="q-jp">${q.jp}</p>
+      ${q.reading ? `<p class="q-reading">${q.reading}</p>` : ''}
+      <p class="q-prompt">${q.prompt}</p>
+      <div class="opts" id="opts-${q.id}">
+        ${q.opts.map((o,oi)=>`<button class="opt" onclick="pick(${q.id},${oi})"><span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${o}</span></button>`).join('')}
+      </div>
+    </div>`;
+  });
+  area.innerHTML = html;
+}
+
+function pick(qid, oi) {
+  if (submitted) return;
+  answers[qid] = oi;
+  document.getElementById('qcard-'+qid).classList.add('answered');
+  document.querySelectorAll('#opts-'+qid+' .opt').forEach((b,i)=>{
+    b.classList.toggle('selected', i===oi);
+  });
+  updateUI();
+}
+
+function updateNameDisplay() {
+  const v = document.getElementById('nome-input').value.trim();
+  document.getElementById('pname-show').textContent = v || '';
+  updateUI();
+}
+
+function updateUI() {
+  const n = Object.keys(answers).length;
+  const nome = document.getElementById('nome-input').value.trim();
+  document.getElementById('pbar').style.width = (n/30*100)+'%';
+  document.getElementById('ptext').textContent = n+' de 30 respondidas';
+  const btn = document.getElementById('submit-btn');
+  const ready = n===30 && nome.length>0;
+  btn.disabled = !ready;
+  document.getElementById('submit-note').textContent = ready
+    ? 'Tudo pronto! Clique para ver seu resultado.'
+    : (nome.length===0 ? 'Informe seu nome e responda todas as questões.' : `Faltam ${30-n} questões.`);
+}
+
+function submitTest() {
+  if (submitted) return;
+  submitted = true;
+  document.getElementById('submit-btn').disabled = true;
+
+  // Calcular
+  let total=0, byLevel={N5:0,N4:0,N3:0,N2:0,N1:0}, countLevel={N5:0,N4:0,N3:0,N2:0,N1:0};
+  questions.forEach(q=>{
+    countLevel[q.level]++;
+    if(answers[q.id]===q.correct) { total++; byLevel[q.level]++; }
+    document.querySelectorAll('#opts-'+q.id+' .opt').forEach((b,i)=>{
+      b.classList.add('disabled');
+      if(i===q.correct) b.classList.add('correct');
+      else if(answers[q.id]===i) b.classList.add('wrong');
+    });
+  });
+
+  const pct = Math.round(total/30*100);
+  const nome = document.getElementById('nome-input').value.trim();
+  document.getElementById('nome-input').disabled = true;
+
+  let nivel, jlpt, desc, nivelJP;
+  if(pct<=35){nivel="Iniciante";jlpt="N5–N4";nivelJP="初級";desc="Você reconhece estruturas e vocabulário básico do japonês. Recomenda-se estudar hiragana, katakana, kanji básicos (N5) e gramática fundamental com o Minna no Nihongo vol. 1.";}
+  else if(pct<=65){nivel="Intermediário";jlpt="N3–N4";nivelJP="中級";desc="Você tem uma base sólida e consegue lidar com situações cotidianas em japonês. O foco agora deve ser ampliar vocabulário, gramática N3 e praticar leitura de textos simples.";}
+  else if(pct<=85){nivel="Avançado";jlpt="N2";nivelJP="上級";desc="Seu nível permite compreender textos complexos e se comunicar com fluidez em muitos contextos. Aprofunde gramática formal, expressões idiomáticas e leitura de notícias em japonês.";}
+  else{nivel="Fluente / Expert";jlpt="N1";nivelJP="上級以上";desc="Você demonstra domínio avançado do japonês, incluindo estruturas formais e vocabulário sofisticado. Continue com leitura de literatura, jornais e escrita formal.";}
+
+  const n5p=Math.round(byLevel.N5/countLevel.N5*100);
+  const n4p=Math.round(byLevel.N4/countLevel.N4*100);
+  const n3p=Math.round(byLevel.N3/countLevel.N3*100);
+  const n2n1p=Math.round((byLevel.N2+byLevel.N1)/(countLevel.N2+countLevel.N1)*100);
+
+  const rs = document.getElementById('result-section');
+  rs.innerHTML = `
+    <div class="result-hero">
+      <p class="result-jp">${nivelJP}</p>
+      <p class="result-level">${nivel}</p>
+      <p class="result-jlpt">Equivalência aprox.: ${jlpt} · ${total}/30 acertos (${pct}%)</p>
+    </div>
+    <div class="score-grid">
+      <div class="score-card"><p class="score-card-label">Acertos totais</p><p class="score-card-val">${total}<span style="font-size:14px;color:var(--ink3)">/30</span></p><p class="score-card-sub">${pct}% de aproveitamento</p></div>
+      <div class="score-card"><p class="score-card-label">Nível</p><p class="score-card-val" style="font-size:18px">${nivel}</p><p class="score-card-sub">${jlpt}</p></div>
+      <div class="score-card"><p class="score-card-label">Básico N5</p><p class="score-card-val">${byLevel.N5}<span style="font-size:14px;color:var(--ink3)">/${countLevel.N5}</span></p></div>
+      <div class="score-card"><p class="score-card-label">Elementar N4</p><p class="score-card-val">${byLevel.N4}<span style="font-size:14px;color:var(--ink3)">/${countLevel.N4}</span></p></div>
+    </div>
+    <div class="bars-block">
+      <div class="bar-row"><span class="bar-label">N5 básico</span><div class="bar-track"><div class="bar-fill" id="bf5" style="background:var(--n5)"></div></div><span class="bar-pct">${n5p}%</span></div>
+      <div class="bar-row"><span class="bar-label">N4 elementar</span><div class="bar-track"><div class="bar-fill" id="bf4" style="background:var(--n4)"></div></div><span class="bar-pct">${n4p}%</span></div>
+      <div class="bar-row"><span class="bar-label">N3 inter.</span><div class="bar-track"><div class="bar-fill" id="bf3" style="background:var(--n3)"></div></div><span class="bar-pct">${n3p}%</span></div>
+      <div class="bar-row"><span class="bar-label">N2–N1 avançado</span><div class="bar-track"><div class="bar-fill" id="bf2" style="background:var(--n1)"></div></div><span class="bar-pct">${n2n1p}%</span></div>
+    </div>
+    <div class="desc-block">${desc}</div>
+    <div id="send-status"><p class="sending-msg">Enviando resultado...</p></div>
+  `;
+  rs.classList.add('visible');
+  rs.scrollIntoView({behavior:'smooth', block:'start'});
+
+  setTimeout(()=>{
+    document.getElementById('bf5').style.width=n5p+'%';
+    document.getElementById('bf4').style.width=n4p+'%';
+    document.getElementById('bf3').style.width=n3p+'%';
+    document.getElementById('bf2').style.width=n2n1p+'%';
+  }, 200);
+
+// Enviar para Google Sheets (Substituído por envio nativo do Apps Script)
+  const payload = {
+    nome, total, percentual: pct, nivel, jlpt,
+    N5: byLevel.N5+'/'+countLevel.N5,
+    N4: byLevel.N4+'/'+countLevel.N4,
+    N3: byLevel.N3+'/'+countLevel.N3,
+    N2N1: (byLevel.N2+byLevel.N1)+'/'+(countLevel.N2+countLevel.N1)
+  };
+
+  google.script.run
+    .withSuccessHandler(function() {
+      document.getElementById('send-status').innerHTML = '<div class="sent-ok">✓ Resultado registrado com sucesso!</div>';
+    })
+    .withFailureHandler(function(error) {
+      console.error("Erro no envio:", error);
+      document.getElementById('send-status').innerHTML = '<div class="sent-err">Não foi possível enviar o resultado automaticamente. Anote seu resultado e informe ao avaliador.</div>';
+    })
+    .salvarResultado(payload); // Chama diretamente a função do Código.gs
+}
+
+buildQuestions();
+</script>
+</body>
+</html>
